@@ -50,6 +50,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# This is a private include file to keep password and private data
 private_data.h
+
+# Eagle temporary files
 *.b#*
 *.s#*
