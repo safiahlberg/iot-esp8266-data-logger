@@ -28,6 +28,14 @@ Adafruit_SSD1306 display(OLED_RESET);
 /************************* Private data **************************************/
 #include "private_data.h"
 
+// Private data should contain the following definitions
+// #define WLAN_SSID       "<Your SSID>"
+// #define WLAN_PASS       "<Your WiFi password key>"
+// #define AIO_SERVER      "<The server you wish to publish to, for example io.adafruit.com>"
+// #define AIO_SERVERPORT  8883                   // 8883 for MQTTS
+// #define AIO_USERNAME    "<Username>"
+// #define AIO_KEY         "<Key>"
+
 /************ Global State (you don't need to change this!) ******************/
 
 // WiFiFlientSecure for SSL/TLS support
