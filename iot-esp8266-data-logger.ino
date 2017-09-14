@@ -70,9 +70,9 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  initDisplay();
+  void initDisplay();
 
-  mqttConnection();
+  void mqttConnection();
 }
 
 uint32_t x=0;
@@ -113,7 +113,7 @@ void initDisplay(void) {
   display.setTextColor(WHITE);
   display.setCursor(0,0);
   
-  resetDisplay();
+  void resetDisplay();
 }
 
 void resetDisplay(void) {
