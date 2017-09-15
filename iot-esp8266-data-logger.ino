@@ -28,6 +28,12 @@ Adafruit_SSD1306 display(OLED_RESET);
 /************************* Private data **************************************/
 #include "private_data.h"
 
+/************************* Push Button ***************************************/
+#include "pushbutton.h"
+
+/************************* Timers ********************************************/
+#include "scutil/sc_timer_service.h"
+
 // Private data should contain the following definitions
 // #define WLAN_SSID       "<Your SSID>"
 // #define WLAN_PASS       "<Your WiFi password key>"
@@ -64,9 +70,9 @@ void setup() {
   Serial.begin(115200);
   delay(10);
 
-  initDisplay();
+  void initDisplay();
 
-  mqttConnection();
+  void mqttConnection();
 }
 
 uint32_t x=0;
@@ -107,7 +113,7 @@ void initDisplay(void) {
   display.setTextColor(WHITE);
   display.setCursor(0,0);
   
-  resetDisplay();
+  void resetDisplay();
 }
 
 void resetDisplay(void) {

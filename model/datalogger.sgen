@@ -1,0 +1,11 @@
+GeneratorModel for yakindu::c {
+
+	statechart datalogger {
+
+		feature Outlet {
+			targetProject = "iot-esp8266-data-logger"
+			targetFolder = "src-gen"
+			libraryTargetFolder = "src-gen"
+		}
+	}
+}
