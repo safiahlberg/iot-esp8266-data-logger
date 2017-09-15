@@ -8,6 +8,7 @@
 */
 
 /* prototypes of all internal functions */
+static sc_boolean datalogger_check_main_region_Logger_tr0_tr0(const Datalogger* handle);
 static sc_boolean datalogger_check_main_region_Logger_r1_Active_tr0_tr0(const Datalogger* handle);
 static sc_boolean datalogger_check_main_region_Logger_r1_Active_r1_MQTT_Connecting_tr0_tr0(const Datalogger* handle);
 static sc_boolean datalogger_check_main_region_Logger_r1_Active_r1_Collecting_Data_tr0_tr0(const Datalogger* handle);
@@ -16,6 +17,7 @@ static sc_boolean datalogger_check_main_region_Logger_r1_Active_r1_Wait_tr0_tr0(
 static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Active_tr0_tr0(const Datalogger* handle);
 static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Active_tr1_tr1(const Datalogger* handle);
 static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_tr0_tr0(const Datalogger* handle);
+static void datalogger_effect_main_region_Logger_tr0(Datalogger* handle);
 static void datalogger_effect_main_region_Logger_r1_Active_tr0(Datalogger* handle);
 static void datalogger_effect_main_region_Logger_r1_Active_r1_MQTT_Connecting_tr0(Datalogger* handle);
 static void datalogger_effect_main_region_Logger_r1_Active_r1_Collecting_Data_tr0(Datalogger* handle);
@@ -25,7 +27,9 @@ static void datalogger_effect_main_region_Logger_r2_Display_Sleepmode_r1_Active_
 static void datalogger_effect_main_region_Logger_r2_Display_Sleepmode_r1_Active_tr1(Datalogger* handle);
 static void datalogger_effect_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_tr0(Datalogger* handle);
 static void datalogger_enact_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle);
+static void datalogger_enact_main_region_Logger_r1_entry__(Datalogger* handle);
 static void datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Active(Datalogger* handle);
+static void datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping(Datalogger* handle);
 static void datalogger_exact_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle);
 static void datalogger_exact_main_region_Logger_r2_Display_Sleepmode_r1_Active(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_default(Datalogger* handle);
@@ -33,19 +37,19 @@ static void datalogger_enseq_main_region_Logger_r1_Active_r1_MQTT_Connecting_def
 static void datalogger_enseq_main_region_Logger_r1_Active_r1_Collecting_Data_default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r1_Active_r1_Publishing_Data_default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r1_Active_r1_Wait_default(Datalogger* handle);
-static void datalogger_enseq_main_region_Logger_r1_Error_default(Datalogger* handle);
+static void datalogger_enseq_main_region_Logger_r1_entry___default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Active_default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_default(Datalogger* handle);
 static void datalogger_enseq_main_region_default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r1_default(Datalogger* handle);
 static void datalogger_enseq_main_region_Logger_r2_default(Datalogger* handle);
-static void datalogger_shenseq_main_region_Logger_r2_Display_Sleepmode_r1(Datalogger* handle);
+static void datalogger_exseq_main_region_Logger(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r1_Active(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r1_Active_r1_MQTT_Connecting(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r1_Active_r1_Collecting_Data(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r1_Active_r1_Publishing_Data(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle);
-static void datalogger_exseq_main_region_Logger_r1_Error(Datalogger* handle);
+static void datalogger_exseq_main_region_Logger_r1_entry__(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r2_Display_Sleepmode_r1_Active(Datalogger* handle);
 static void datalogger_exseq_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping(Datalogger* handle);
 static void datalogger_exseq_main_region(Datalogger* handle);
@@ -57,11 +61,10 @@ static void datalogger_react_main_region_Logger_r1_Active_r1_MQTT_Connecting(Dat
 static void datalogger_react_main_region_Logger_r1_Active_r1_Collecting_Data(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r1_Active_r1_Publishing_Data(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle);
-static void datalogger_react_main_region_Logger_r1_Error(Datalogger* handle);
+static void datalogger_react_main_region_Logger_r1_entry__(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r2_Display_Sleepmode_r1_Active(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r1__entry_Default(Datalogger* handle);
-static void datalogger_react_main_region_Logger_r2_Display_Sleepmode_r1__entry_Default(Datalogger* handle);
 static void datalogger_react_main_region_Logger_r2__entry_Default(Datalogger* handle);
 static void datalogger_react_main_region__entry_Default(Datalogger* handle);
 static void datalogger_clearInEvents(Datalogger* handle);
@@ -77,10 +80,6 @@ void datalogger_init(Datalogger* handle)
 			handle->stateConfVector[i] = Datalogger_last_state;
 		}
 		
-		for (i = 0; i < DATALOGGER_MAX_HISTORY_STATES; ++i)
-		{
-			handle->historyVector[i] = Datalogger_last_state;
-		}
 		
 		handle->stateConfVectorPosition = 0;
 	
@@ -127,8 +126,9 @@ sc_boolean datalogger_isFinal(const Datalogger* handle)
 
 static void datalogger_clearInEvents(Datalogger* handle)
 {
-	handle->iface.ButtonPressed_raised = bool_false;
+	handle->iface.WakeDisplay_raised = bool_false;
 	handle->iface.Failure_raised = bool_false;
+	handle->iface.Reset_raised = bool_false;
 	handle->timeEvents.datalogger_main_region_Logger_r1_Active_r1_Wait_tev0_raised = bool_false;
 	handle->timeEvents.datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active_tev0_raised = bool_false;
 }
@@ -168,9 +168,9 @@ void datalogger_runCycle(Datalogger* handle)
 			datalogger_react_main_region_Logger_r1_Active_r1_Wait(handle);
 			break;
 		}
-		case Datalogger_main_region_Logger_r1_Error:
+		case Datalogger_main_region_Logger_r1_entry__:
 		{
-			datalogger_react_main_region_Logger_r1_Error(handle);
+			datalogger_react_main_region_Logger_r1_entry__(handle);
 			break;
 		}
 		case Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active:
@@ -229,8 +229,8 @@ sc_boolean datalogger_isStateActive(const Datalogger* handle, DataloggerStates s
 			result = (sc_boolean) (handle->stateConfVector[SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ACTIVE_R1_WAIT] == Datalogger_main_region_Logger_r1_Active_r1_Wait
 			);
 			break;
-		case Datalogger_main_region_Logger_r1_Error :
-			result = (sc_boolean) (handle->stateConfVector[SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ERROR] == Datalogger_main_region_Logger_r1_Error
+		case Datalogger_main_region_Logger_r1_entry__ :
+			result = (sc_boolean) (handle->stateConfVector[SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ENTRY__] == Datalogger_main_region_Logger_r1_entry__
 			);
 			break;
 		case Datalogger_main_region_Logger_r2_Display_Sleepmode :
@@ -270,18 +270,27 @@ void dataloggerIfaceDisplay_set_displayText(Datalogger* handle, sc_string value)
 {
 	handle->ifaceDisplay.displayText = value;
 }
-void dataloggerIface_raise_buttonPressed(Datalogger* handle)
+void dataloggerIface_raise_wakeDisplay(Datalogger* handle)
 {
-	handle->iface.ButtonPressed_raised = bool_true;
+	handle->iface.WakeDisplay_raised = bool_true;
 }
 void dataloggerIface_raise_failure(Datalogger* handle)
 {
 	handle->iface.Failure_raised = bool_true;
 }
+void dataloggerIface_raise_reset(Datalogger* handle)
+{
+	handle->iface.Reset_raised = bool_true;
+}
 
 
 
 /* implementations of all internal functions */
+
+static sc_boolean datalogger_check_main_region_Logger_tr0_tr0(const Datalogger* handle)
+{
+	return handle->iface.Reset_raised;
+}
 
 static sc_boolean datalogger_check_main_region_Logger_r1_Active_tr0_tr0(const Datalogger* handle)
 {
@@ -315,18 +324,24 @@ static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Ac
 
 static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Active_tr1_tr1(const Datalogger* handle)
 {
-	return handle->iface.ButtonPressed_raised;
+	return handle->iface.WakeDisplay_raised;
 }
 
 static sc_boolean datalogger_check_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_tr0_tr0(const Datalogger* handle)
 {
-	return handle->iface.ButtonPressed_raised;
+	return handle->iface.WakeDisplay_raised;
+}
+
+static void datalogger_effect_main_region_Logger_tr0(Datalogger* handle)
+{
+	datalogger_exseq_main_region_Logger(handle);
+	datalogger_enseq_main_region_Logger_default(handle);
 }
 
 static void datalogger_effect_main_region_Logger_r1_Active_tr0(Datalogger* handle)
 {
 	datalogger_exseq_main_region_Logger_r1_Active(handle);
-	datalogger_enseq_main_region_Logger_r1_Error_default(handle);
+	datalogger_enseq_main_region_Logger_r1_entry___default(handle);
 }
 
 static void datalogger_effect_main_region_Logger_r1_Active_r1_MQTT_Connecting_tr0(Datalogger* handle)
@@ -375,14 +390,29 @@ static void datalogger_effect_main_region_Logger_r2_Display_Sleepmode_r1_Sleepin
 static void datalogger_enact_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle)
 {
 	/* Entry action for state 'Wait'. */
-	datalogger_setTimer(handle, (sc_eventid) &(handle->timeEvents.datalogger_main_region_Logger_r1_Active_r1_Wait_tev0_raised) , 30 * 1000, bool_false);
+	datalogger_setTimer(handle, (sc_eventid) &(handle->timeEvents.datalogger_main_region_Logger_r1_Active_r1_Wait_tev0_raised) , 10 * 1000, bool_false);
+}
+
+/* Entry action for state 'entry /'. */
+static void datalogger_enact_main_region_Logger_r1_entry__(Datalogger* handle)
+{
+	/* Entry action for state 'entry /'. */
+	handle->iface.WakeDisplay_raised = bool_true;
 }
 
 /* Entry action for state 'Active'. */
 static void datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Active(Datalogger* handle)
 {
 	/* Entry action for state 'Active'. */
-	datalogger_setTimer(handle, (sc_eventid) &(handle->timeEvents.datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active_tev0_raised) , 120 * 1000, bool_false);
+	datalogger_setTimer(handle, (sc_eventid) &(handle->timeEvents.datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active_tev0_raised) , 30 * 1000, bool_false);
+	handle->ifaceDisplay.isSleeping = bool_false;
+}
+
+/* Entry action for state 'Sleeping'. */
+static void datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping(Datalogger* handle)
+{
+	/* Entry action for state 'Sleeping'. */
+	handle->ifaceDisplay.isSleeping = bool_true;
 }
 
 /* Exit action for state 'Wait'. */
@@ -440,11 +470,12 @@ static void datalogger_enseq_main_region_Logger_r1_Active_r1_Wait_default(Datalo
 	handle->stateConfVectorPosition = 0;
 }
 
-/* 'default' enter sequence for state Error */
-static void datalogger_enseq_main_region_Logger_r1_Error_default(Datalogger* handle)
+/* 'default' enter sequence for state entry / */
+static void datalogger_enseq_main_region_Logger_r1_entry___default(Datalogger* handle)
 {
-	/* 'default' enter sequence for state Error */
-	handle->stateConfVector[0] = Datalogger_main_region_Logger_r1_Error;
+	/* 'default' enter sequence for state entry / */
+	datalogger_enact_main_region_Logger_r1_entry__(handle);
+	handle->stateConfVector[0] = Datalogger_main_region_Logger_r1_entry__;
 	handle->stateConfVectorPosition = 0;
 }
 
@@ -455,16 +486,15 @@ static void datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Active_d
 	datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Active(handle);
 	handle->stateConfVector[1] = Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active;
 	handle->stateConfVectorPosition = 1;
-	handle->historyVector[0] = handle->stateConfVector[1];
 }
 
 /* 'default' enter sequence for state Sleeping */
 static void datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_default(Datalogger* handle)
 {
 	/* 'default' enter sequence for state Sleeping */
+	datalogger_enact_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping(handle);
 	handle->stateConfVector[1] = Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping;
 	handle->stateConfVectorPosition = 1;
-	handle->historyVector[0] = handle->stateConfVector[1];
 }
 
 /* 'default' enter sequence for region main region */
@@ -488,25 +518,12 @@ static void datalogger_enseq_main_region_Logger_r2_default(Datalogger* handle)
 	datalogger_react_main_region_Logger_r2__entry_Default(handle);
 }
 
-/* shallow enterSequence with history in child r1 */
-static void datalogger_shenseq_main_region_Logger_r2_Display_Sleepmode_r1(Datalogger* handle)
+/* Default exit sequence for state Logger */
+static void datalogger_exseq_main_region_Logger(Datalogger* handle)
 {
-	/* shallow enterSequence with history in child r1 */
-	/* Handle shallow history entry of r1 */
-	switch(handle->historyVector[ 0 ])
-	{
-		case Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active :
-		{
-			datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Active_default(handle);
-			break;
-		}
-		case Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping :
-		{
-			datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping_default(handle);
-			break;
-		}
-		default: break;
-	}
+	/* Default exit sequence for state Logger */
+	datalogger_exseq_main_region_Logger_r1(handle);
+	datalogger_exseq_main_region_Logger_r2(handle);
 }
 
 /* Default exit sequence for state Active */
@@ -549,10 +566,10 @@ static void datalogger_exseq_main_region_Logger_r1_Active_r1_Wait(Datalogger* ha
 	datalogger_exact_main_region_Logger_r1_Active_r1_Wait(handle);
 }
 
-/* Default exit sequence for state Error */
-static void datalogger_exseq_main_region_Logger_r1_Error(Datalogger* handle)
+/* Default exit sequence for state entry / */
+static void datalogger_exseq_main_region_Logger_r1_entry__(Datalogger* handle)
 {
-	/* Default exit sequence for state Error */
+	/* Default exit sequence for state entry / */
 	handle->stateConfVector[0] = Datalogger_last_state;
 	handle->stateConfVectorPosition = 0;
 }
@@ -601,9 +618,9 @@ static void datalogger_exseq_main_region(Datalogger* handle)
 			datalogger_exseq_main_region_Logger_r1_Active_r1_Wait(handle);
 			break;
 		}
-		case Datalogger_main_region_Logger_r1_Error :
+		case Datalogger_main_region_Logger_r1_entry__ :
 		{
-			datalogger_exseq_main_region_Logger_r1_Error(handle);
+			datalogger_exseq_main_region_Logger_r1_entry__(handle);
 			break;
 		}
 		default: break;
@@ -652,9 +669,9 @@ static void datalogger_exseq_main_region_Logger_r1(Datalogger* handle)
 			datalogger_exseq_main_region_Logger_r1_Active_r1_Wait(handle);
 			break;
 		}
-		case Datalogger_main_region_Logger_r1_Error :
+		case Datalogger_main_region_Logger_r1_entry__ :
 		{
-			datalogger_exseq_main_region_Logger_r1_Error(handle);
+			datalogger_exseq_main_region_Logger_r1_entry__(handle);
 			break;
 		}
 		default: break;
@@ -738,12 +755,18 @@ static void datalogger_exseq_main_region_Logger_r2_Display_Sleepmode_r1(Datalogg
 static void datalogger_react_main_region_Logger_r1_Active_r1_MQTT_Connecting(Datalogger* handle)
 {
 	/* The reactions of state MQTT Connecting. */
-	if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+	if (datalogger_check_main_region_Logger_tr0_tr0(handle) == bool_true)
 	{ 
-		datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		datalogger_effect_main_region_Logger_tr0(handle);
 	}  else
 	{
-		datalogger_effect_main_region_Logger_r1_Active_r1_MQTT_Connecting_tr0(handle);
+		if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+		{ 
+			datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		}  else
+		{
+			datalogger_effect_main_region_Logger_r1_Active_r1_MQTT_Connecting_tr0(handle);
+		}
 	}
 }
 
@@ -751,12 +774,18 @@ static void datalogger_react_main_region_Logger_r1_Active_r1_MQTT_Connecting(Dat
 static void datalogger_react_main_region_Logger_r1_Active_r1_Collecting_Data(Datalogger* handle)
 {
 	/* The reactions of state Collecting Data. */
-	if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+	if (datalogger_check_main_region_Logger_tr0_tr0(handle) == bool_true)
 	{ 
-		datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		datalogger_effect_main_region_Logger_tr0(handle);
 	}  else
 	{
-		datalogger_effect_main_region_Logger_r1_Active_r1_Collecting_Data_tr0(handle);
+		if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+		{ 
+			datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		}  else
+		{
+			datalogger_effect_main_region_Logger_r1_Active_r1_Collecting_Data_tr0(handle);
+		}
 	}
 }
 
@@ -764,12 +793,18 @@ static void datalogger_react_main_region_Logger_r1_Active_r1_Collecting_Data(Dat
 static void datalogger_react_main_region_Logger_r1_Active_r1_Publishing_Data(Datalogger* handle)
 {
 	/* The reactions of state Publishing Data. */
-	if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+	if (datalogger_check_main_region_Logger_tr0_tr0(handle) == bool_true)
 	{ 
-		datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		datalogger_effect_main_region_Logger_tr0(handle);
 	}  else
 	{
-		datalogger_effect_main_region_Logger_r1_Active_r1_Publishing_Data_tr0(handle);
+		if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+		{ 
+			datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		}  else
+		{
+			datalogger_effect_main_region_Logger_r1_Active_r1_Publishing_Data_tr0(handle);
+		}
 	}
 }
 
@@ -777,21 +812,32 @@ static void datalogger_react_main_region_Logger_r1_Active_r1_Publishing_Data(Dat
 static void datalogger_react_main_region_Logger_r1_Active_r1_Wait(Datalogger* handle)
 {
 	/* The reactions of state Wait. */
-	if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
+	if (datalogger_check_main_region_Logger_tr0_tr0(handle) == bool_true)
 	{ 
-		datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		datalogger_effect_main_region_Logger_tr0(handle);
 	}  else
 	{
-		if (datalogger_check_main_region_Logger_r1_Active_r1_Wait_tr0_tr0(handle) == bool_true)
+		if (datalogger_check_main_region_Logger_r1_Active_tr0_tr0(handle) == bool_true)
 		{ 
-			datalogger_effect_main_region_Logger_r1_Active_r1_Wait_tr0(handle);
-		} 
+			datalogger_effect_main_region_Logger_r1_Active_tr0(handle);
+		}  else
+		{
+			if (datalogger_check_main_region_Logger_r1_Active_r1_Wait_tr0_tr0(handle) == bool_true)
+			{ 
+				datalogger_effect_main_region_Logger_r1_Active_r1_Wait_tr0(handle);
+			} 
+		}
 	}
 }
 
-/* The reactions of state Error. */
-static void datalogger_react_main_region_Logger_r1_Error(Datalogger* handle)
+/* The reactions of state entry /. */
+static void datalogger_react_main_region_Logger_r1_entry__(Datalogger* handle)
 {
+	/* The reactions of state entry /. */
+	if (datalogger_check_main_region_Logger_tr0_tr0(handle) == bool_true)
+	{ 
+		datalogger_effect_main_region_Logger_tr0(handle);
+	} 
 }
 
 /* The reactions of state Active. */
@@ -827,25 +873,11 @@ static void datalogger_react_main_region_Logger_r1__entry_Default(Datalogger* ha
 	datalogger_enseq_main_region_Logger_r1_Active_r1_MQTT_Connecting_default(handle);
 }
 
-/* Default react sequence for shallow history entry  */
-static void datalogger_react_main_region_Logger_r2_Display_Sleepmode_r1__entry_Default(Datalogger* handle)
-{
-	/* Default react sequence for shallow history entry  */
-	/* Enter the region with shallow history */
-	if (handle->historyVector[0] != Datalogger_last_state)
-	{
-		datalogger_shenseq_main_region_Logger_r2_Display_Sleepmode_r1(handle);
-	} else
-	{
-		datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Active_default(handle);
-	} 
-}
-
 /* Default react sequence for initial entry  */
 static void datalogger_react_main_region_Logger_r2__entry_Default(Datalogger* handle)
 {
 	/* Default react sequence for initial entry  */
-	datalogger_react_main_region_Logger_r2_Display_Sleepmode_r1__entry_Default(handle);
+	datalogger_enseq_main_region_Logger_r2_Display_Sleepmode_r1_Active_default(handle);
 }
 
 /* Default react sequence for initial entry  */

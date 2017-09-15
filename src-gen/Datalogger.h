@@ -22,7 +22,7 @@ typedef enum
 	Datalogger_main_region_Logger_r1_Active_r1_Collecting_Data,
 	Datalogger_main_region_Logger_r1_Active_r1_Publishing_Data,
 	Datalogger_main_region_Logger_r1_Active_r1_Wait,
-	Datalogger_main_region_Logger_r1_Error,
+	Datalogger_main_region_Logger_r1_entry__,
 	Datalogger_main_region_Logger_r2_Display_Sleepmode,
 	Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Active,
 	Datalogger_main_region_Logger_r2_Display_Sleepmode_r1_Sleeping
@@ -38,8 +38,9 @@ typedef struct
 /*! Type definition of the data structure for the DataloggerIface interface scope. */
 typedef struct
 {
-	sc_boolean ButtonPressed_raised;
+	sc_boolean WakeDisplay_raised;
 	sc_boolean Failure_raised;
+	sc_boolean Reset_raised;
 } DataloggerIface;
 
 /*! Type definition of the data structure for the DataloggerTimeEvents interface scope. */
@@ -52,8 +53,6 @@ typedef struct
 
 /*! Define dimension of the state configuration vector for orthogonal states. */
 #define DATALOGGER_MAX_ORTHOGONAL_STATES 2
-	/*! Define dimension of the state configuration vector for history states. */
-#define DATALOGGER_MAX_HISTORY_STATES 1
 
 /*! Define indices of states in the StateConfVector */
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER 0
@@ -62,7 +61,7 @@ typedef struct
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ACTIVE_R1_COLLECTING_DATA 0
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ACTIVE_R1_PUBLISHING_DATA 0
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ACTIVE_R1_WAIT 0
-#define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ERROR 0
+#define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R1_ENTRY__ 0
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R2_DISPLAY_SLEEPMODE 1
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R2_DISPLAY_SLEEPMODE_R1_ACTIVE 1
 #define SCVI_DATALOGGER_MAIN_REGION_LOGGER_R2_DISPLAY_SLEEPMODE_R1_SLEEPING 1
@@ -74,7 +73,6 @@ typedef struct
 typedef struct
 {
 	DataloggerStates stateConfVector[DATALOGGER_MAX_ORTHOGONAL_STATES];
-	DataloggerStates historyVector[DATALOGGER_MAX_HISTORY_STATES];
 	sc_ushort stateConfVectorPosition; 
 	
 	DataloggerIfaceDisplay ifaceDisplay;
@@ -106,11 +104,14 @@ extern void dataloggerIfaceDisplay_set_isSleeping(Datalogger* handle, sc_boolean
 extern sc_string dataloggerIfaceDisplay_get_displayText(const Datalogger* handle);
 /*! Sets the value of the variable 'displayText' that is defined in the interface scope 'Display'. */ 
 extern void dataloggerIfaceDisplay_set_displayText(Datalogger* handle, sc_string value);
-/*! Raises the in event 'ButtonPressed' that is defined in the default interface scope. */ 
-extern void dataloggerIface_raise_buttonPressed(Datalogger* handle);
+/*! Raises the in event 'WakeDisplay' that is defined in the default interface scope. */ 
+extern void dataloggerIface_raise_wakeDisplay(Datalogger* handle);
 
 /*! Raises the in event 'Failure' that is defined in the default interface scope. */ 
 extern void dataloggerIface_raise_failure(Datalogger* handle);
+
+/*! Raises the in event 'Reset' that is defined in the default interface scope. */ 
+extern void dataloggerIface_raise_reset(Datalogger* handle);
 
 
 /*!
