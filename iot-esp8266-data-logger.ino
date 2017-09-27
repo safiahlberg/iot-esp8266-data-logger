@@ -91,7 +91,7 @@ void dataloggerCtrl_setTimer(Datalogger* handle, const sc_eventid evid, const sc
 }
 
 //! callback implementation for canceling time events.
-void trafficLightCtrl_unsetTimer(Datalogger* handle, const sc_eventid evid) {
+void dataloggerCtrl_unsetTimer(Datalogger* handle, const sc_eventid evid) {
 	sc_timer_cancel(&timer_service, evid);
 }
 
@@ -128,9 +128,7 @@ void loop() {
 
 	unsigned long current_millies = millis();
 
-	read_pushbutton(&pushbutton_1);
-	read_pushbutton(&pushbutton_2);
-
+	read_pushbutton(&pushbutton);
 
 	if ( cycle_count == 0L || (current_millies >= last_cycle_time + CYCLE_PERIOD) ) {
 
