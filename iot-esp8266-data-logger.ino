@@ -34,6 +34,10 @@ Adafruit_SSD1306 display(OLED_RESET);
 /************************* Timers ********************************************/
 #include "scutil/sc_timer_service.h"
 
+/************************* Generated control *********************************/
+#include "src-gen/Datalogger.h"
+#include "src-gen/DataloggerRequired.h"
+
 // Private data should contain the following definitions
 // #define WLAN_SSID       "<Your SSID>"
 // #define WLAN_PASS       "<Your WiFi password key>"
@@ -66,18 +70,78 @@ Adafruit_MQTT_Publish feed = Adafruit_MQTT_Publish(&mqtt, AIO_USERNAME "/feeds/p
 void MQTT_connect();
 void verifyFingerprint();
 
+//! As we make use of time triggers (after & every) we make use of a generic timer implementation and need a defined number of timers.
+#define MAX_TIMERS 20
+
+//! The timers are managed by a timer service. */
+static sc_timer_service_t timer_service;
+
+// Pushbutton that activates the screen among other things
+pushbutton_t pushbutton;
+const int button_pin = 3;    // the number of the pushbutton pin
+
+static Datalogger datalogger;
+
+//! We allocate the desired array of timers.
+static sc_timer_t timers[MAX_TIMERS];
+
+//! callback implementation for the setting up time events
+void dataloggerCtrl_setTimer(Datalogger* handle, const sc_eventid evid, const sc_integer time_ms, const sc_boolean periodic){
+	sc_timer_start(&timer_service, (void*) handle, evid, time_ms, periodic);
+}
+
+//! callback implementation for canceling time events.
+void trafficLightCtrl_unsetTimer(Datalogger* handle, const sc_eventid evid) {
+	sc_timer_cancel(&timer_service, evid);
+}
+
+static void button_changed(pushbutton_t *button) {
+	if (!pushbutton.state) dataloggerIface_raise_wakeDisplay(&datalogger);
+}
+
 void setup() {
   Serial.begin(115200);
-  delay(10);
+  setup_pushbutton(&pushbutton, button_pin, button_changed);
 
-  void initDisplay();
+  sc_timer_service_init(
+  				&timer_service,
+  				timers, MAX_TIMERS,
+  				(sc_raise_time_event_fp) &datalogger_raiseTimeEvent);
 
-  void mqttConnection();
+  datalogger_init(&datalogger);
+
+  datalogger_enter(&datalogger);
+
 }
+
+
+#define CYCLE_PERIOD (10)
+static unsigned long cycle_count = 0L;
+static unsigned long last_cycle_time = 0L;
+
+
 
 uint32_t x=0;
 
 void loop() {
+
+
+	unsigned long current_millies = millis();
+
+	read_pushbutton(&pushbutton_1);
+	read_pushbutton(&pushbutton_2);
+
+
+	if ( cycle_count == 0L || (current_millies >= last_cycle_time + CYCLE_PERIOD) ) {
+
+		sc_timer_service_proceed(&timer_service, current_millies - last_cycle_time);
+
+		datalogger_runCycle(&datalogger);
+
+		last_cycle_time = current_millies;
+		cycle_count++;
+	}
+
   // Ensure the connection to the MQTT server is alive (this will make the first
   // connection and automatically reconnect when disconnected).  See the MQTT_connect
   // function definition further below.
@@ -95,6 +159,10 @@ void loop() {
 
   // wait a couple seconds to avoid rate limit
   delay(5000);
+
+}
+
+void dataloggerIface_synchronize(const Datalogger *handle) {
 
 }
 
